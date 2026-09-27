@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { commands } from "../../common/data/commands";
+import ProjectTab from "./Project";
 
 type TerminalLine = {
     id: number;
@@ -14,6 +15,8 @@ function TerminalBody() {
     const inputRef = useRef<HTMLInputElement>(null);
     const terminalRef = useRef<HTMLDivElement>(null);
 
+    const [activeTab, setActiveTab] = useState<string | null>(null);
+
     const runCommand = (command: string) => {
         const trimmedCommand = command.trim();
 
@@ -26,6 +29,12 @@ function TerminalBody() {
         // Clear terminal
         if (commandName === "clear") {
             setHistory([]);
+            setInput("");
+            return;
+        }
+
+        if (commandName === "projects") {
+            setActiveTab("projects");
             setInput("");
             return;
         }
@@ -285,6 +294,9 @@ function TerminalBody() {
                         />
                     </div>
                 </form>
+                {activeTab === "projects" && (
+                    <ProjectTab onClose={setActiveTab} />
+                )}
 
             </div>
         </div>

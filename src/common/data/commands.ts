@@ -1,6 +1,7 @@
 export type TerminalCommand = {
     name: string;
     description: string;
+    newTab: boolean;
     execute: () => string[];
 };
 
@@ -8,6 +9,7 @@ export const commands: Record<string, TerminalCommand> = {
     help: {
         name: "help",
         description: "Show available commands",
+        newTab: false,
         execute: () => [
             "Available commands:",
             "",
@@ -24,6 +26,7 @@ export const commands: Record<string, TerminalCommand> = {
     about: {
         name: "about",
         description: "About me",
+        newTab: false,
         execute: () => [
             "Suryajith",
             "Frontend Developer",
@@ -36,6 +39,7 @@ export const commands: Record<string, TerminalCommand> = {
     skills: {
         name: "skills",
         description: "View technical skills",
+        newTab: false,
         execute: () => [
             "Skills",
             "",
@@ -55,6 +59,7 @@ export const commands: Record<string, TerminalCommand> = {
     projects: {
         name: "projects",
         description: "View projects",
+        newTab: false,
         execute: () => [
             "Projects",
             "",
@@ -68,6 +73,7 @@ export const commands: Record<string, TerminalCommand> = {
     experience: {
         name: "experience",
         description: "View experience",
+        newTab: false,
         execute: () => [
             "Experience",
             "",
@@ -79,6 +85,7 @@ export const commands: Record<string, TerminalCommand> = {
     contact: {
         name: "contact",
         description: "Contact information",
+        newTab: false,
         execute: () => [
             "Contact",
             "",
