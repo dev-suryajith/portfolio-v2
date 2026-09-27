@@ -1,17 +1,44 @@
-import { ArrowUp, BotIcon, Images, Settings, } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+    ArrowUp,
+    BotIcon,
+    Images,
+    Settings,
+} from "lucide-react";
 
-import Navbar from "../sections/dark-minimal/Navbar";
-import About from "../sections/dark-minimal/About";
-import Contact from "../sections/dark-minimal/Contact";
-import Footer from "../sections/dark-minimal/Footer";
-import Hero from "../sections/dark-minimal/Hero";
-import Projects from "../sections/dark-minimal/Projects";
+import DarkMinimalHome from "../components/DarkMinimal";
+import TerminalHome from "../sections/teminal/Sample";
 import StyleModal from "../components/ui/StyleModal";
+import LoadingScreen from "../components/ui/LoadingScreen";
+import useStyle from "../hooks/useStyle";
 
 function Home() {
+    const {
+        style,
+        changeStyle,
+        initializeStyle,
+    } = useStyle();
+
     const [isOpen, setOpen] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [styleModal, setStyleModal] = useState(false);
+
+    useEffect(() => {
+        const initializeScreen = async () => {
+            setLoading(true);
+
+            initializeStyle();
+
+            // Give the browser time to apply the initialized style
+            await new Promise((resolve) => {
+                setTimeout(resolve, 2000);
+            });
+
+            setLoading(false);
+        };
+
+        initializeScreen();
+    }, []);
 
     const scrollToTop = () => {
         window.scrollTo({
@@ -20,28 +47,38 @@ function Home() {
         });
     };
 
-    return (
-        <div className="min-h-screen bg-(--color-bg)">
-            <Navbar />
+    const renderHome = () => {
+        switch (style) {
+            case "dark-minimal":
+                return <DarkMinimalHome />;
 
-            <main className="container pt-20">
-                <Hero />
-                <About />
-                <Projects />
-                <Contact />
-                <Footer />
-            </main>
+            case "terminal":
+                return <TerminalHome />;
+
+            default:
+                return <DarkMinimalHome />;
+        }
+    };
+
+    if (loading) {
+        return (
+            <LoadingScreen message="Initializing experience" />
+        );
+    }
+
+    return (
+        <>
+            {renderHome()}
 
             {/* Floating Controls */}
             <div className="fixed right-6 bottom-6 z-50">
                 {/* Action Menu */}
                 <div
-                    className={`absolute right-0 bottom-12 flex flex-col gap-1 origin-bottom-right rounded-xl border border-(--color-border-subtle) bg-(--color-surface) p-1 shadow-2xl transition-all duration-300 ease-out 
-                        ${isOpen
+                    className={`absolute right-0 bottom-12 flex flex-col gap-1 origin-bottom-right rounded-xl border border-(--color-border-subtle) bg-(--color-surface) p-1 shadow-2xl transition-all duration-300 ease-out ${
+                        isOpen
                             ? "visible scale-100 opacity-100"
                             : "invisible scale-75 opacity-0"
-                        }
-                    `}
+                    }`}
                 >
                     {/* Back to Top */}
                     <div className="group relative">
@@ -54,27 +91,25 @@ function Home() {
                             <ArrowUp size={17} />
                         </button>
 
-                        <span
-                            className="pointer-events-none absolute right-12 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-md border border-(--color-border-subtle) bg-(--color-surface-2) px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-[0.12em] text-(--color-text) opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-                        >
+                        <span className="pointer-events-none absolute top-1/2 right-12 -translate-y-1/2 whitespace-nowrap rounded-md border border-(--color-border-subtle) bg-(--color-surface-2) px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-[0.12em] text-(--color-text) opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                             Back to top
                         </span>
                     </div>
 
-                    {/* Gallery */}
+                    {/* Style */}
                     <div className="group relative">
                         <button
                             type="button"
-                            onClick={()=>setStyleModal(true)}
-                            aria-label="View gallery"
+                            onClick={() =>
+                                setStyleModal(true)
+                            }
+                            aria-label="Change UI style"
                             className="flex h-10 w-10 items-center justify-center rounded-lg text-(--color-text-secondary) transition-colors duration-200 hover:bg-(--color-accent) hover:text-(--color-bg)"
                         >
                             <Images size={17} />
                         </button>
 
-                        <span
-                            className="pointer-events-none absolute right-12 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-md border border-(--color-border-subtle) bg-(--color-surface-2) px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-[0.12em] text-(--color-text) opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-                        >
+                        <span className="pointer-events-none absolute top-1/2 right-12 -translate-y-1/2 whitespace-nowrap rounded-md border border-(--color-border-subtle) bg-(--color-surface-2) px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-[0.12em] text-(--color-text) opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                             Change UI Style
                         </span>
                     </div>
@@ -89,10 +124,8 @@ function Home() {
                             <BotIcon size={17} />
                         </button>
 
-                        <span
-                            className="pointer-events-none absolute right-12 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-md border border-(--color-border-subtle) bg-(--color-surface-2) px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-[0.12em] text-(--color-text) opacity-0 transition-opacity duration-200 group-hover:opacity-100                            "
-                        >
-                            AI assistant
+                        <span className="pointer-events-none absolute top-1/2 right-12 -translate-y-1/2 whitespace-nowrap rounded-md border border-(--color-border-subtle) bg-(--color-surface-2) px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-[0.12em] text-(--color-text) opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                            AI Assistant
                         </span>
                     </div>
                 </div>
@@ -101,7 +134,9 @@ function Home() {
                 <div className="group relative">
                     <button
                         type="button"
-                        onClick={() => setOpen((prev) => !prev)}
+                        onClick={() =>
+                            setOpen((prev) => !prev)
+                        }
                         aria-label={
                             isOpen
                                 ? "Close settings"
@@ -111,31 +146,30 @@ function Home() {
                     >
                         <Settings
                             size={17}
-                            className={`
-                                transition-transform
-                                duration-300
-                                ${isOpen
+                            className={`transition-transform duration-300 ${
+                                isOpen
                                     ? "rotate-90"
                                     : "group-hover:rotate-45"
-                                }
-                            `}
+                            }`}
                         />
                     </button>
 
-                    {/* Settings Tooltip */}
                     {!isOpen && (
-                        <span
-                            className="pointer-events-none absolute right-12 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-md border border-(--color-border-subtle) bg-(--color-surface-2) px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-[0.12em] text-(--color-text) opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-                        >
+                        <span className="pointer-events-none absolute top-1/2 right-12 -translate-y-1/2 whitespace-nowrap rounded-md border border-(--color-border-subtle) bg-(--color-surface-2) px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-[0.12em] text-(--color-text) opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                             Settings
                         </span>
                     )}
                 </div>
             </div>
+
+            {/* Style Modal */}
             {styleModal && (
-                <StyleModal onClose={setStyleModal} />
+                <StyleModal
+                    onClose={setStyleModal}
+                    changeStyle={changeStyle}
+                />
             )}
-        </div>
+        </>
     );
 }
 
