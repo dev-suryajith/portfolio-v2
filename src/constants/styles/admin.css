@@ -1,0 +1,25 @@
+.admin-root {
+    --admin-bg: #f6f7fb;
+    --admin-surface: #ffffff;
+    --admin-surface-muted: #f9fafb;
+
+    --admin-border: #e5e7eb;
+    --admin-border-focus: #a5b4fc;
+
+    --admin-text: #111827;
+    --admin-text-secondary: #4b5563;
+    --admin-text-muted: #9ca3af;
+
+    --admin-primary: #6366f1;
+    --admin-primary-hover: #4f46e5;
+
+    --admin-success: #10b981;
+    --admin-warning: #f59e0b;
+    --admin-danger: #ef4444;
+
+    --admin-radius-sm: 6px;
+    --admin-radius-md: 8px;
+    --admin-radius-lg: 12px;
+
+    --admin-sidebar-width: 240px;
+}

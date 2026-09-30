@@ -5,7 +5,7 @@ const details = [
         key: "email",
         label: "Email",
         value: "suryajithss2608@gmail.com",
-        href: null
+        href: undefined
     },
     {
         key: "linkedIn",

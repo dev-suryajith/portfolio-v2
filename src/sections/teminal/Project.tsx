@@ -1,3 +1,6 @@
+interface ProjectTabProps {
+    onClose: () => void;
+}
 export type Project = {
     name: string;
     description: string;
@@ -8,7 +11,7 @@ export type Project = {
 
 import Tab from "./Tab";
 
-function ProjectTab({onClose}) {
+function ProjectTab({ onClose }: ProjectTabProps) {
 
     const projects: Project[] = [
         {
