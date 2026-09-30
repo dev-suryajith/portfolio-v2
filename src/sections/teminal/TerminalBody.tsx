@@ -295,7 +295,7 @@ function TerminalBody() {
                     </div>
                 </form>
                 {activeTab === "projects" && (
-                    <ProjectTab onClose={setActiveTab} />
+                    <ProjectTab onClose={()=>setActiveTab(null)} />
                 )}
 
             </div>
