@@ -108,6 +108,32 @@
     --color-overlay: rgba(255, 255, 255, 0.7);
 }
 
+/* ====================================
+   TERMINAL — SCROLLBAR
+   ==================================== */
+
+[data-style="terminal"] {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) var(--color-surface);
+}
+
+[data-style="terminal"]::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+[data-style="terminal"]::-webkit-scrollbar-track {
+    background: var(--color-surface);
+}
+
+[data-style="terminal"]::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 999px;
+}
+
+[data-style="terminal"]::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-muted);
+}
 
 /* ====================================
    TERMINAL ANIMATIONS

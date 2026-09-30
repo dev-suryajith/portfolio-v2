@@ -68,7 +68,7 @@ function Tab({ title, children, onClose }: TabProps) {
     }, [isDragging]);
 
     return (
-        <div className="fixed inset-0 z-(--z-modal) bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-(--z-modal)0 ">
 
             {/* Draggable Window */}
             <div
@@ -131,6 +131,7 @@ function Tab({ title, children, onClose }: TabProps) {
                                 h-3
                                 w-3
                                 rounded-full
+                                cursor-pointer
                                 bg-[#ff5f57]
                             "
                         />

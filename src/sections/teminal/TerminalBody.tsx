@@ -20,6 +20,22 @@ function TerminalBody() {
 
     const { switchTheme } = useTheme();
 
+    const addToHistory = (
+        command: string,
+        output: string[]
+    ) => {
+        setHistory((previous) => [
+            ...previous,
+            {
+                id: Date.now(),
+                command,
+                output,
+            },
+        ]);
+
+        setInput("");
+    };
+
     const runCommand = (command: string) => {
         const trimmedCommand = command.trim();
 
@@ -29,82 +45,106 @@ function TerminalBody() {
 
         const commandName = trimmedCommand.toLowerCase();
 
-        // Clear terminal
+        /* ================================
+           CLEAR
+           ================================= */
+
         if (commandName === "clear") {
             setHistory([]);
             setInput("");
             return;
         }
 
+        /* ================================
+           PROJECTS
+           ================================= */
+
         if (commandName === "projects") {
             setActiveTab("projects");
-            setInput("");
+            addToHistory(
+                trimmedCommand,
+                commands[commandName]?.execute() ?? []
+            );
             return;
         }
 
-        let output: string[];
+        /* ================================
+           THEME — LIGHT
+           ================================= */
+
         if (commandName === "theme light") {
-            switchTheme("light")
-            if (commands[commandName]) {
-                output = commands[commandName].execute();
-            } else {
-                output = [
-                    `command not found: ${commandName}`,
-                    "Type 'help' to see available commands.",
-                ];
-            }
+            switchTheme("light");
+
+            const output = commands[commandName]?.execute() ?? [
+                "Theme command unavailable.",
+            ];
+
+            addToHistory(trimmedCommand, output);
+            return;
         }
+
+        /* ================================
+           THEME — DARK
+           ================================= */
+
         if (commandName === "theme dark") {
-            switchTheme("dark")
-            if (commands[commandName]) {
-                output = commands[commandName].execute();
-            } else {
-                output = [
-                    `command not found: ${commandName}`,
-                    "Type 'help' to see available commands.",
-                ];
-            }
+            switchTheme("dark");
+
+            const output = commands[commandName]?.execute() ?? [
+                "Theme command unavailable.",
+            ];
+
+            addToHistory(trimmedCommand, output);
+            return;
         }
+
+        /* ================================
+           STANDARD COMMAND
+           ================================= */
 
         const terminalCommand = commands[commandName];
 
-
-
         if (terminalCommand) {
-            output = terminalCommand.execute();
-        } else {
-            output = [
-                `command not found: ${commandName}`,
-                "Type 'help' to see available commands.",
-            ];
+            addToHistory(
+                trimmedCommand,
+                terminalCommand.execute()
+            );
+            return;
         }
 
-        setHistory((previous) => [
-            ...previous,
-            {
-                id: Date.now(),
-                command: trimmedCommand,
-                output,
-            },
-        ]);
+        /* ================================
+           UNKNOWN COMMAND
+           ================================= */
 
-        setInput("");
+        addToHistory(trimmedCommand, [
+            `command not found: ${commandName}`,
+            "Type 'help' to see available commands.",
+        ]);
     };
 
     const handleSubmit = (
         event: React.FormEvent<HTMLFormElement>
     ) => {
         event.preventDefault();
-
         runCommand(input);
     };
+
+    /* ================================
+       INITIAL INPUT FOCUS
+       ================================= */
 
     useEffect(() => {
         inputRef.current?.focus();
     }, []);
 
+    /* ================================
+       AUTO SCROLL
+       ================================= */
+
     useEffect(() => {
-        if (!terminalRef.current) return;
+        if (!terminalRef.current) {
+            return;
+        }
 
         terminalRef.current.scrollTop =
             terminalRef.current.scrollHeight;
@@ -133,11 +173,19 @@ function TerminalBody() {
         >
             <div className="min-h-full">
 
-                {/* Boot Message */}
+                {/* ================================
+                    BOOT MESSAGE
+                    ================================= */}
+
                 <div className="mb-8">
+
+                    {/* Last Login */}
+
                     <div className="text-(--color-text-muted)">
                         Last login: Sun Sep 27 13:24:18 on console
                     </div>
+
+                    {/* Whoami */}
 
                     <div className="mt-3">
                         <span className="text-(--color-accent)">
@@ -165,6 +213,8 @@ function TerminalBody() {
                         suryajith
                     </div>
 
+                    {/* Welcome */}
+
                     <div className="mt-3">
                         <span className="text-(--color-accent)">
                             suryajith@portfolio
@@ -191,6 +241,8 @@ function TerminalBody() {
                         Welcome to my portfolio.
                     </div>
 
+                    {/* Help Hint */}
+
                     <div className="mt-3 text-(--color-text-muted)">
                         Type{" "}
                         <span className="text-(--color-text)">
@@ -200,13 +252,19 @@ function TerminalBody() {
                     </div>
                 </div>
 
-                {/* Command History */}
+
+                {/* ================================
+                    COMMAND HISTORY
+                    ================================= */}
+
                 <div className="space-y-5">
                     {history.map((item) => (
                         <div key={item.id}>
 
                             {/* Command */}
+
                             <div className="flex items-start">
+
                                 <span className="shrink-0 text-(--color-accent)">
                                     suryajith@portfolio
                                 </span>
@@ -226,10 +284,13 @@ function TerminalBody() {
                                 <span className="ml-2 break-all text-(--color-text)">
                                     {item.command}
                                 </span>
+
                             </div>
 
+
                             {/* Output */}
-                            <div className="mt-2 text-(--color-text-secondary)">
+
+                            <div className="mt-2 whitespace-pre text-(--color-text-secondary)">
                                 {item.output.map(
                                     (line, index) => (
                                         <div
@@ -245,17 +306,25 @@ function TerminalBody() {
                                     )
                                 )}
                             </div>
+
                         </div>
                     ))}
                 </div>
 
-                {/* Current Prompt */}
+
+                {/* ================================
+                    CURRENT PROMPT
+                    ================================= */}
+
                 <form
                     onSubmit={handleSubmit}
                     className="mt-5 flex items-start"
                 >
+
                     {/* Prompt */}
+
                     <span className="shrink-0">
+
                         <span className="text-(--color-accent)">
                             suryajith@portfolio
                         </span>
@@ -271,10 +340,14 @@ function TerminalBody() {
                         <span className="ml-1 text-(--color-text-muted)">
                             $
                         </span>
+
                     </span>
 
+
                     {/* Input */}
+
                     <div className="relative ml-2 min-w-0 flex-1">
+
                         <input
                             ref={inputRef}
                             type="text"
@@ -301,12 +374,16 @@ function TerminalBody() {
                             aria-label="Terminal input"
                         />
 
-                        {/* Visible command */}
+
+                        {/* Visible Command */}
+
                         <span className="break-all text-(--color-text)">
                             {input}
                         </span>
 
+
                         {/* Terminal Cursor */}
+
                         <span
                             className="
                                 ml-0.5
@@ -319,10 +396,20 @@ function TerminalBody() {
                                 animate-[blink_1s_step-end_infinite]
                             "
                         />
+
                     </div>
+
                 </form>
+
+
+                {/* ================================
+                    PROJECT TAB
+                    ================================= */}
+
                 {activeTab === "projects" && (
-                    <ProjectTab onClose={() => setActiveTab(null)} />
+                    <ProjectTab
+                        onClose={() => setActiveTab(null)}
+                    />
                 )}
 
             </div>
