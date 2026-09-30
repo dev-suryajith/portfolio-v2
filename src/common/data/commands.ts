@@ -10,6 +10,7 @@ export const commands: Record<string, TerminalCommand> = {
         name: "help",
         description: "Show available commands",
         newTab: false,
+
         execute: () => [
             "Available commands:",
             "",
@@ -20,6 +21,11 @@ export const commands: Record<string, TerminalCommand> = {
             "  experience  View experience",
             "  contact     Contact information",
             "  clear       Clear terminal",
+            "",
+            "Theme:",
+            "  theme light Switch to light mode",
+            "  theme dark  Switch to dark mode",
+            "  clear       Clear terminal",
         ],
     },
 
@@ -27,6 +33,7 @@ export const commands: Record<string, TerminalCommand> = {
         name: "about",
         description: "About me",
         newTab: false,
+
         execute: () => [
             "Suryajith",
             "Frontend Developer",
@@ -40,6 +47,7 @@ export const commands: Record<string, TerminalCommand> = {
         name: "skills",
         description: "View technical skills",
         newTab: false,
+
         execute: () => [
             "Skills",
             "",
@@ -60,6 +68,7 @@ export const commands: Record<string, TerminalCommand> = {
         name: "projects",
         description: "View projects",
         newTab: false,
+
         execute: () => [
             "Projects",
             "",
@@ -74,6 +83,7 @@ export const commands: Record<string, TerminalCommand> = {
         name: "experience",
         description: "View experience",
         newTab: false,
+
         execute: () => [
             "Experience",
             "",
@@ -86,12 +96,33 @@ export const commands: Record<string, TerminalCommand> = {
         name: "contact",
         description: "Contact information",
         newTab: false,
+
         execute: () => [
             "Contact",
             "",
-            "Email: your@email.com",
-            "GitHub: github.com/yourusername",
-            "LinkedIn: linkedin.com/in/yourusername",
+            "Email: suryajithss2608@gmail.com",
+            "GitHub: github.com/dev-suryajith",
+            "LinkedIn: linkedin.com/in/suryajith-ss",
+        ],
+    },
+
+    "theme light": {
+        name: "theme light",
+        description: "Switch to light mode",
+        newTab: false,
+
+        execute: () => [
+            "Switching theme to light...",
+        ],
+    },
+
+    "theme dark": {
+        name: "theme dark",
+        description: "Switch to dark mode",
+        newTab: false,
+
+        execute: () => [
+            "Switching theme to dark...",
         ],
     },
 };

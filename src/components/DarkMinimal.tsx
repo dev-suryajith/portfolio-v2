@@ -1,4 +1,4 @@
-import "./../../public/styles/theme/dark-minimal.css"
+import "../constants/theme/dark-minimal.css"
 
 import Navbar from "../sections/dark-minimal/Navbar";
 import About from "../sections/dark-minimal/About";

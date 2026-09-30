@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { commands } from "../../common/data/commands";
 import ProjectTab from "./Project";
+import useTheme from "../../hooks/useTheme";
 
 type TerminalLine = {
     id: number;
@@ -16,6 +17,8 @@ function TerminalBody() {
     const terminalRef = useRef<HTMLDivElement>(null);
 
     const [activeTab, setActiveTab] = useState<string | null>(null);
+
+    const { switchTheme } = useTheme();
 
     const runCommand = (command: string) => {
         const trimmedCommand = command.trim();
@@ -39,9 +42,33 @@ function TerminalBody() {
             return;
         }
 
+        let output: string[];
+        if (commandName === "theme light") {
+            switchTheme("light")
+            if (commands[commandName]) {
+                output = commands[commandName].execute();
+            } else {
+                output = [
+                    `command not found: ${commandName}`,
+                    "Type 'help' to see available commands.",
+                ];
+            }
+        }
+        if (commandName === "theme dark") {
+            switchTheme("dark")
+            if (commands[commandName]) {
+                output = commands[commandName].execute();
+            } else {
+                output = [
+                    `command not found: ${commandName}`,
+                    "Type 'help' to see available commands.",
+                ];
+            }
+        }
+
         const terminalCommand = commands[commandName];
 
-        let output: string[];
+
 
         if (terminalCommand) {
             output = terminalCommand.execute();
@@ -295,7 +322,7 @@ function TerminalBody() {
                     </div>
                 </form>
                 {activeTab === "projects" && (
-                    <ProjectTab onClose={()=>setActiveTab(null)} />
+                    <ProjectTab onClose={() => setActiveTab(null)} />
                 )}
 
             </div>

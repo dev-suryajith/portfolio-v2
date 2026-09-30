@@ -51,7 +51,7 @@ const Navbar = () => {
                         {/* Theme Toggle */}
                         <button
                             type="button"
-                            onClick={toggleTheme}
+                            onClick={()=>(toggleTheme(),console.log(theme))}
                             aria-label={
                                 theme === "dark"
                                     ? "Switch to light mode"

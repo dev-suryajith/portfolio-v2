@@ -18,6 +18,8 @@ const useTheme = () => {
             initialTheme
         );
 
+        localStorage.setItem("theme", initialTheme)
+
         setTheme(initialTheme);
     };
 
@@ -33,10 +35,22 @@ const useTheme = () => {
 
         setTheme(nextTheme);
     };
+    const switchTheme = (newTheme) => {
+
+        document.documentElement.setAttribute(
+            "data-theme",
+            newTheme
+        );
+
+        localStorage.setItem("theme", newTheme);
+
+        setTheme(newTheme);
+    };
 
     return {
         theme,
         toggleTheme,
+        switchTheme,
         initializeTheme,
     };
 };

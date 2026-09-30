@@ -9,14 +9,19 @@ const useStyle = () => {
         const savedStyle = localStorage.getItem("portfolio-style");
 
         const initialStyle: Style =
-            savedStyle === "dark-minimal"
+            savedStyle === "terminal"
                 ? savedStyle
-                : "terminal";
+                : "dark-minimal";
 
         document.documentElement.setAttribute(
             "data-style",
             initialStyle
         );
+
+        localStorage.setItem(
+                "portfolio-style",
+                initialStyle
+            );
 
         setStyle(initialStyle);
     };
