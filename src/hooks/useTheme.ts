@@ -35,7 +35,7 @@ const useTheme = () => {
 
         setTheme(nextTheme);
     };
-    const switchTheme = (newTheme) => {
+    const switchTheme = (newTheme:any) => {
 
         document.documentElement.setAttribute(
             "data-theme",
