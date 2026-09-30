@@ -1,4 +1,4 @@
-import "../../constants/styles/terminal.css"
+import "../../../public/styles/theme/terminal.css"
 
 import TerminalWindow from "./TerminalWindow";
 

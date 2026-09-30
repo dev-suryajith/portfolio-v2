@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Eye, EyeOff, LockKeyhole } from "lucide-react";
 
-import "../../constants/styles/admin.css"
+import "../../../public/styles/theme/admin.css"
 
 function Login() {
     const [showPassword, setShowPassword] = useState(false);
