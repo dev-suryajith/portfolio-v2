@@ -2,7 +2,7 @@ import { useGLTF } from "@react-three/drei";
 import { useEffect, useRef } from "react";
 
 const Character = () => {
-    const gltf = useGLTF("./src/components/3d/robot/scene.gltf");
+    const gltf = useGLTF("/models/robot/scene.gltf");
 
     const head = gltf.scene.getObjectByName("Head_03");
 
