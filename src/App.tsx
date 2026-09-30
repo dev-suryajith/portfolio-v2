@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import ThemeWrapper from "./common/ThemeWrapper";
 import Login from "./sections/admin/Login";
-import Dashboard from "./sections/admin/Dashboard";
 import Admin from "./sections/admin/Admin";
 
 function App() {
