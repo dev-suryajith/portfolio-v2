@@ -9,7 +9,7 @@ import Projects from "../sections/dark-minimal/Projects";
 
 function DarkMinimalHome() {
     return (
-        <div className="min-h-screen bg-(--color-bg)">
+        <div className="min-h-screen px-10 bg-(--color-bg)">
             <Navbar />
 
             <main className="container pt-20">

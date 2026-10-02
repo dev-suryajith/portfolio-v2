@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
     ArrowUpRight,
     FolderKanban,
@@ -5,6 +6,21 @@ import {
     Plus,
     UserRound,
 } from "lucide-react";
+
+import { getProjectsAPI } from "../../services/allAPI";
+import SupaTable from "../../components/ui/SupaComponents/SupaTable";
+
+interface Project {
+    _id: string;
+    title: string;
+    year: number;
+    description: string;
+    stack: string[];
+    href: string;
+    status: boolean;
+    createdAt: string;
+    updatedAt: string;
+}
 
 const stats = [
     {
@@ -34,6 +50,79 @@ const stats = [
 ];
 
 function Dashboard() {
+    const [projects, setProjects] = useState<Project[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    const getProjects = async () => {
+        try {
+            const response = await getProjectsAPI();
+
+            if (response.data.success) {
+                setProjects(response.data.projects);
+            }
+        } catch (error) {
+            console.error("Failed to fetch projects:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        getProjects();
+    }, []);
+
+    const projectColumns = [
+        {
+            key: "title" as keyof Project,
+            label: "Project",
+        },
+        {
+            key: "year" as keyof Project,
+            label: "Year",
+        },
+        {
+            key: "stack" as keyof Project,
+            label: "Stack",
+            render: (value: Project["stack"]) => (
+                <div className="flex flex-wrap gap-1.5">
+                    {value.map((technology) => (
+                        <span
+                            key={technology}
+                            className="
+                                rounded-full
+                                bg-(--admin-surface-muted)
+                                px-2
+                                py-1
+                                text-[11px]
+                                text-(--admin-text-secondary)
+                            "
+                        >
+                            {technology}
+                        </span>
+                    ))}
+                </div>
+            ),
+        },
+        {
+            key: "status" as keyof Project,
+            label: "Status",
+        },
+        {
+            key: "href" as keyof Project,
+            label: "Link",
+            render: (value: Project["href"]) => (
+                <a
+                    href={value}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-(--admin-primary) hover:underline"
+                >
+                    View
+                </a>
+            ),
+        },
+    ];
+
     return (
         <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8">
 
@@ -119,26 +208,43 @@ function Dashboard() {
             {/* Dashboard content */}
             <section className="mt-6 grid gap-6 xl:grid-cols-3">
 
-                <div
-                    className="
-                        rounded-(--admin-radius-lg)
-                        border border-(--admin-border)
-                        bg-(--admin-surface)
-                        p-5
-                        xl:col-span-2
-                    "
-                >
-                    <h2 className="text-sm font-semibold">
-                        Recent projects
-                    </h2>
+                {/* Recent Projects */}
+                <div className="xl:col-span-2">
 
-                    <p className="mt-1 text-xs text-(--admin-text-muted)">
-                        Your latest portfolio updates.
-                    </p>
+                    <div className="mb-4">
+                        <h2 className="text-sm font-semibold">
+                            Recent projects
+                        </h2>
 
-                    {/* Project table/list goes here */}
+                        <p className="mt-1 text-xs text-(--admin-text-muted)">
+                            Your latest portfolio updates.
+                        </p>
+                    </div>
+
+                    {loading ? (
+                        <div
+                            className="
+                                rounded-(--admin-radius-lg)
+                                border border-(--admin-border)
+                                bg-(--admin-surface)
+                                py-10
+                                text-center
+                                text-sm
+                                text-(--admin-text-muted)
+                            "
+                        >
+                            Loading projects...
+                        </div>
+                    ) : (
+                        <SupaTable
+                            columns={projectColumns}
+                            data={projects}
+                            emptyMessage="No projects found."
+                        />
+                    )}
                 </div>
 
+                {/* Quick Actions */}
                 <div
                     className="
                         rounded-(--admin-radius-lg)
@@ -155,7 +261,73 @@ function Dashboard() {
                         Manage your portfolio content.
                     </p>
 
-                    {/* Quick actions */}
+                    <div className="mt-5 space-y-2">
+                        <button
+                            type="button"
+                            className="
+                                flex w-full items-center justify-between
+                                rounded-(--admin-radius-md)
+                                border border-(--admin-border)
+                                px-4 py-3
+                                text-sm
+                                text-(--admin-text-secondary)
+                                transition-colors
+                                hover:bg-(--admin-surface-muted)
+                                hover:text-(--admin-text)
+                            "
+                        >
+                            <span className="flex items-center gap-3">
+                                <Plus size={16} />
+                                Add project
+                            </span>
+
+                            <ArrowUpRight size={15} />
+                        </button>
+
+                        <button
+                            type="button"
+                            className="
+                                flex w-full items-center justify-between
+                                rounded-(--admin-radius-md)
+                                border border-(--admin-border)
+                                px-4 py-3
+                                text-sm
+                                text-(--admin-text-secondary)
+                                transition-colors
+                                hover:bg-(--admin-surface-muted)
+                                hover:text-(--admin-text)
+                            "
+                        >
+                            <span className="flex items-center gap-3">
+                                <FolderKanban size={16} />
+                                Manage projects
+                            </span>
+
+                            <ArrowUpRight size={15} />
+                        </button>
+
+                        <button
+                            type="button"
+                            className="
+                                flex w-full items-center justify-between
+                                rounded-(--admin-radius-md)
+                                border border-(--admin-border)
+                                px-4 py-3
+                                text-sm
+                                text-(--admin-text-secondary)
+                                transition-colors
+                                hover:bg-(--admin-surface-muted)
+                                hover:text-(--admin-text)
+                            "
+                        >
+                            <span className="flex items-center gap-3">
+                                <Mail size={16} />
+                                View messages
+                            </span>
+
+                            <ArrowUpRight size={15} />
+                        </button>
+                    </div>
                 </div>
 
             </section>

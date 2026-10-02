@@ -21,7 +21,7 @@ const Navbar = () => {
     const { theme, toggleTheme } = useTheme();
 
     return (
-        <header className="fixed top-0 left-0 z-(--z-navigation) w-full">
+        <header className="fixed top-0 px-10 left-0 z-(--z-navigation) w-full">
             <div className="container">
                 <nav className="flex h-20 items-center justify-between border-b border-(--color-border-subtle)">
                     {/* Logo */}
